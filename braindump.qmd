@@ -1,0 +1,102 @@
+---
+title: "Teaching Demo"
+format: 
+  html:
+    toc: true
+editor: visual
+---
+
+## Overview
+
+Keep it introductory. Focus on the how, not the what.
+
+|          | Programming concept | Assessment      | Taxonomy   | Pedagogy           |
+|----------|---------------------|-----------------|------------|--------------------|
+| Lesson 1 | Syntax              | Parsons problem | Remember   | Cognitive load     |
+| Lesson 2 | Encapsulation       | Code-tracing    | Understand | *TODO*             |
+| Lesson 3 | Scope               | Debugging       | Analyze    | Productive failure |
+
+## Lesson 1
+
+We're going to learn R's **syntax** using penguin size measurements collected near Palmer Station, Antarctica. By the end of this lesson, you'll be able to:
+
+1.  Assign objects to variables
+2.  Call functions with arguments
+3.  Access elements of collections
+4.  Recognize logical flow
+
+### Assign objects to variables
+
+Objects are nouns, which we store in variables. Create a variable using the `<-` operator. `days_yr <- 365` creates a variable called `days_yr` with the object 365.
+
+At their simplest, objects can be numbers, text, and logicals (true or false). Later you'll learn how to make more complicated objects by combining these parts.
+
+#### Examples of simple objects
+
+The following code shows how to assign simple objects. Lines starting with `#` are comments. They're just for human eyes and the computer will ignore them.
+
+``` r
+# Numbers, with and without decimals
+golden_ration <- 1.618
+num_fingers <- 10
+
+# Text uses quotes
+fav_animal <- "opossum"
+city <- "Santa Barbara"
+
+# Logicals must be in all caps
+this_is_R <- TRUE
+this_is_python <- FALSE
+```
+
+#### Examples of more complex objects
+
+The R objects you've seen so far are actually collections, called *vectors*. Even when we say `days_yr <- 365`, we're creating a vector of one item. We create larger vectors using `c()` (think "c" for "combine"). This works when all the elements are the same type (number, text, or logical).
+
+``` r
+fibonacci <- c(1, 1, 2, 3, 5, 8)
+cities <- c("Santa Barbara", "San Francisco", "Los Angeles")
+ttff <- c(TRUE, TRUE, FALSE, FALSE)
+```
+
+When the vector includes elements of different types we use `list()` instead of `c()`. Often we name the elements of our list.
+
+``` r
+max <- list(age_yr = 35, job = "postdoc", nationality = "USA")
+rihanna <- list(age_yr = 35, job = "mogul", nationality = "Barbados")
+```
+
+### Call functions with arguments
+
+If objects are nouns, functions are verbs. They do something with objects. `sort()` sorts a vector. `mean()` finds the mean value of numbers in a vector. `seq()` creates a sequence. We **call** functions on **arguments** like so.
+
+``` r
+sort(c("b", "a", "e", "d", "c"))
+mean(c(1, 2, 3, 4, 10))
+seq(5)
+```
+
+Notice how the result of a function is a transformation of its argument. `sort()` took a vector with 5 elements and returned another vector of 5 elements. `mean()` also took a length 5 vector, but returned just one number. Conversely, `seq()` took one number and returned a length 5 vector. Functions are very flexible!
+
+A great thing about functions is they're reusable. We can apply the same transformation to a lot of different objects.
+
+``` r
+x <- c(1, 2, 3, 4)
+y <- c(10, 20, 30, 40)
+z <- c(-1, 0, 1)
+mean(x)
+mean(y)
+mean(z)
+```
+
+That's the same function returning three different results, depending on the argument.
+
+### Access elements of collections
+
+After we put data into an object we usually want to access it later. For simple vectors, we use `[]` to pull elements out.
+
+``` r
+x <- c(1, 2, 3, 4)
+x[1]
+x[4]
+```
