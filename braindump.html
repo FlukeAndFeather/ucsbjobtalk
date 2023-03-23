@@ -97,6 +97,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link href="braindump_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="braindump_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -109,11 +110,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
   <li><a href="#lesson-1" id="toc-lesson-1" class="nav-link" data-scroll-target="#lesson-1">Lesson 1</a>
   <ul class="collapse">
-  <li><a href="#assign-objects-to-variables" id="toc-assign-objects-to-variables" class="nav-link" data-scroll-target="#assign-objects-to-variables">Assign objects to variables</a></li>
-  <li><a href="#call-functions-with-arguments" id="toc-call-functions-with-arguments" class="nav-link" data-scroll-target="#call-functions-with-arguments">Call functions with arguments</a></li>
-  <li><a href="#access-elements-of-collections" id="toc-access-elements-of-collections" class="nav-link" data-scroll-target="#access-elements-of-collections">Access elements of collections</a></li>
+  <li><a href="#programming-concept-functions" id="toc-programming-concept-functions" class="nav-link" data-scroll-target="#programming-concept-functions">Programming concept: functions</a></li>
+  <li><a href="#assessment" id="toc-assessment" class="nav-link" data-scroll-target="#assessment">Assessment</a></li>
+  </ul></li>
+  <li><a href="#lesson-2" id="toc-lesson-2" class="nav-link" data-scroll-target="#lesson-2">Lesson 2</a>
+  <ul class="collapse">
+  <li><a href="#programming-concept-debugging" id="toc-programming-concept-debugging" class="nav-link" data-scroll-target="#programming-concept-debugging">Programming concept: debugging</a></li>
+  <li><a href="#assessment-1" id="toc-assessment-1" class="nav-link" data-scroll-target="#assessment-1">Assessment</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -142,11 +148,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Keep it introductory. Focus on the how, not the what.</p>
 <table class="table">
 <colgroup>
-<col style="width: 12%">
-<col style="width: 26%">
-<col style="width: 21%">
-<col style="width: 15%">
-<col style="width: 25%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -160,89 +166,310 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <tbody>
 <tr class="odd">
 <td>Lesson 1</td>
-<td>Syntax</td>
+<td>Functions</td>
 <td>Parsons problem</td>
-<td>Remember</td>
+<td>Recognize</td>
 <td>Cognitive load</td>
 </tr>
 <tr class="even">
 <td>Lesson 2</td>
-<td>Encapsulation</td>
-<td>Code-tracing</td>
-<td>Understand</td>
-<td><em>TODO</em></td>
-</tr>
-<tr class="odd">
-<td>Lesson 3</td>
-<td>Scope</td>
 <td>Debugging</td>
+<td>Code-tracing</td>
 <td>Analyze</td>
 <td>Productive failure</td>
 </tr>
 </tbody>
 </table>
 </section>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="lesson-1" class="level2">
 <h2 class="anchored" data-anchor-id="lesson-1">Lesson 1</h2>
-<p>We’re going to learn R’s <strong>syntax</strong> using penguin size measurements collected near Palmer Station, Antarctica. By the end of this lesson, you’ll be able to:</p>
+<section id="programming-concept-functions" class="level3">
+<h3 class="anchored" data-anchor-id="programming-concept-functions">Programming concept: functions</h3>
+<p>Foundation for reusable, modular code and more advanced functional programming techniques.</p>
+<section id="syntax-and-usage" class="level4">
+<h4 class="anchored" data-anchor-id="syntax-and-usage">Syntax and usage</h4>
+<p>For example, create a function <code>se()</code> to calculate the standard error of a vector.</p>
+<p><span class="math display">\[
+SE=\frac{\sigma}{\sqrt n}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function to calculate the standard error</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(x))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The syntax for a function looks like this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Functions get assigned to variables, just like vectors</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the keyword 'function' and put your arguments in parentheses</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>add2 <span class="ot">&lt;-</span> <span class="cf">function</span>(arg1, arg2) {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use the arguments to perform a task</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># In this case, addition</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> arg1 <span class="sc">+</span> arg2</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The last value in the function becomes the return value</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Here we return the result</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  result</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, use the <code>se()</code> function we created to get the standard error of body size by species and create a figure.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Summarize body size by mean and standard error</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>size_summary <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(species, body_mass_g) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_mass =</span> <span class="fu">mean</span>(body_mass_g),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Here we use se()</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">se_mass =</span> <span class="fu">se</span>(body_mass_g))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the mean size by species with error bars</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(size_summary, <span class="fu">aes</span>(species, mean_mass)) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The standard error becomes error bars</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> mean_mass <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se_mass,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymax =</span> mean_mass <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se_mass),</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Species"</span>, <span class="at">y =</span> <span class="st">"Body size (g)"</span>) <span class="sc">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="braindump_files/figure-html/size-summary-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="a-larger-example" class="level4">
+<h4 class="anchored" data-anchor-id="a-larger-example">A larger example</h4>
+<p>Now a slightly longer function. We start with the observation that the penguin species’ bills are rather distinct. If we plot bill depth vs bill length, the three species form fairly distinct clusters.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins, <span class="fu">aes</span>(bill_length_mm, bill_depth_mm, <span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 2 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="braindump_files/figure-html/penguin-bills-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Let’s see how well two different clustering algorithms distinguish between the three species. We’ll compare k-means to hierarchical clustering and write a function that assesses the accuracy of each.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">101</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Prepare the data by selecting the species column and the bill morphology</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># columns</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>penguins_bills <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, bill_length_mm, bill_depth_mm) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># K-means clustering needs the morphology columns and the number of </span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># clusters (k)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>penguins_kmeans <span class="ot">&lt;-</span> <span class="fu">select</span>(penguins_bills, <span class="sc">-</span>species) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kmeans</span>(<span class="at">centers =</span> <span class="dv">3</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Hierarchical clustering needs the distances between points in the</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># morphology columns (Canberra distance), a method for building the hierarchy </span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># (Ward's minimum variance), and a number of clusters to cut the tree into (k)</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>penguins_hclust <span class="ot">&lt;-</span> <span class="fu">select</span>(penguins_bills, <span class="sc">-</span>species) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dist</span>(<span class="at">method =</span> <span class="st">"canberra"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">hclust</span>(<span class="at">method =</span> <span class="st">"ward.D2"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cutree</span>(<span class="at">k =</span> <span class="dv">3</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Append the cluster assignments to the original data</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>penguins_clusters <span class="ot">&lt;-</span> penguins_bills <span class="sc">%&gt;%</span> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">kmeans_clust =</span> <span class="fu">factor</span>(penguins_kmeans<span class="sc">$</span>cluster),</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">hclust_clust =</span> <span class="fu">factor</span>(penguins_hclust))</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the convex hull of each cluster</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>kmeans_chull <span class="ot">&lt;-</span> penguins_clusters <span class="sc">%&gt;%</span> </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(kmeans_clust) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">chull</span>(bill_length_mm, bill_depth_mm))</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>hclust_chull <span class="ot">&lt;-</span> penguins_clusters <span class="sc">%&gt;%</span> </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(hclust_clust) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">chull</span>(bill_length_mm, bill_depth_mm))</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a><span class="co"># How did they do?</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_clusters, </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(bill_length_mm, bill_depth_mm)) <span class="sc">+</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> kmeans_clust), </span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>               kmeans_chull, </span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"solid"</span>, <span class="st">"dashed"</span>, <span class="st">"dotted"</span>)) <span class="sc">+</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"K-means clusters"</span>) <span class="sc">+</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="braindump_files/figure-html/penguin-clusters-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_clusters, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(bill_length_mm, bill_depth_mm)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> species)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="fu">aes</span>(<span class="at">linetype =</span> hclust_clust), </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>               hclust_chull, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">fill =</span> <span class="cn">NA</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"solid"</span>, <span class="st">"dashed"</span>, <span class="st">"dotted"</span>)) <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Hierarchical clusters"</span>) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="braindump_files/figure-html/penguin-clusters-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Which clustering algorithm do you think did a better job? Turn to someone next to you and share your answer. Did you agree? Why or why not?</p>
+</section>
+</section>
+<section id="assessment" class="level3">
+<h3 class="anchored" data-anchor-id="assessment">Assessment</h3>
+<p>Use the F-1 score to quantify which algorithm performed best. The following code will associate each cluster number with it’s most common (modal) species. For example, in the hierarchical cluster results it would assign cluster 1 to Adelies. But the lines are shuffled out of order. Put them in the correct order to do two things: 1) define a function that assigns species to clusters and 2) adds species assignment columns to the <code>penguins_clusters</code> data frame for both clustering methods. Hint: although the lines are out of order, the indentation is correct.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>    species_count <span class="ot">&lt;-</span> <span class="fu">table</span>(species[clusters <span class="sc">==</span> cl])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">hclust_species =</span> <span class="fu">assign_species</span>(species, hclust_clust),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>penguins_clusters <span class="ot">&lt;-</span> penguins_clusters <span class="sc">%&gt;%</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>assign_species <span class="ot">&lt;-</span> <span class="cf">function</span>(species, clusters) {</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>         kmeans_species <span class="ot">=</span> <span class="fu">assign_species</span>(species, kmeans_clust)<span class="er">)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">character</span>(<span class="fu">length</span>(species))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  result</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (cl <span class="cf">in</span> <span class="fu">unique</span>(clusters)) {</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    result[clusters <span class="sc">==</span> cl] <span class="ot">&lt;-</span> <span class="fu">names</span>(species_count)[<span class="fu">which.max</span>(species_count)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we assess clustering accuracy with the <span class="math inline">\(F_1\)</span> score:</p>
+<p><span class="math display">\[
+F_1=\frac{TP}{TP + \frac{1}{2}(FP + FN)}
+\]</span></p>
+<p>Where TP, FP, and FN are true positives, false positives, and false negatives. We calculate the <span class="math inline">\(F_1\)</span> score within each class and get the overall <span class="math inline">\(F_1\)</span> by averaging each class’s <span class="math inline">\(F_1\)</span> by the fraction of the class in the sample.</p>
+<p>Unshuffle the following code to make an <span class="math inline">\(F_1\)</span> function and, for both K-means and hierarchical clustering, calculate <span class="math inline">\(F_1\)</span> for each species. Take the weighted average of each species-level <span class="math inline">\(F_1\)</span> (weighted by species frequency) to get the overall <span class="math inline">\(F_1\)</span> for both K-means and hierarchical clustering.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>    fn <span class="ot">&lt;-</span> <span class="fu">sum</span>(actual <span class="sc">==</span> a <span class="sc">&amp;</span> assigned <span class="sc">!=</span> a)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    fp <span class="ot">&lt;-</span> <span class="fu">sum</span>(actual <span class="sc">!=</span> a <span class="sc">&amp;</span> assigned <span class="sc">==</span> a)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                penguins_clusters<span class="sc">$</span>kmeans_species<span class="er">)</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  class_f1 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(<span class="fu">unique</span>(actual)))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(class_f1) <span class="ot">&lt;-</span> <span class="fu">unique</span>(actual)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  class_freq <span class="ot">&lt;-</span> <span class="fu">table</span>(actual) <span class="sc">/</span> <span class="fu">length</span>(actual)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                penguins_clusters<span class="sc">$</span>hclust_species<span class="er">)</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="er">}</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="cf">function</span>(actual, assigned) {</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(class_f1 <span class="sc">*</span> class_freq)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">str_glue</span>(<span class="st">"K-means F1 = {round(kmeans_f1, 3)}, hierarchical clustering F1 = {round(hclust_f1, 3)}"</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># for k-means...</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>kmeans_f1 <span class="ot">&lt;-</span> <span class="fu">f1</span>(penguins_clusters<span class="sc">$</span>species,</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>hclust_f1 <span class="ot">&lt;-</span> <span class="fu">f1</span>(penguins_clusters<span class="sc">$</span>species,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    class_f1[a] <span class="ot">&lt;-</span> tp <span class="sc">/</span> (tp <span class="sc">+</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span> <span class="sc">*</span> (fp <span class="sc">+</span> fn))</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="er">}</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    tp <span class="ot">&lt;-</span> <span class="fu">sum</span>(actual <span class="sc">==</span> a <span class="sc">&amp;</span> assigned <span class="sc">==</span> a)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co"># ...and for hierarchical clustering</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (a <span class="cf">in</span> <span class="fu">unique</span>(actual)) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="lesson-2" class="level2">
+<h2 class="anchored" data-anchor-id="lesson-2">Lesson 2</h2>
+<section id="programming-concept-debugging" class="level3">
+<h3 class="anchored" data-anchor-id="programming-concept-debugging">Programming concept: debugging</h3>
+<p>Critical skill, but rarely taught explicitly. Learn how to diagnose bugs with <strong>code-tracing</strong>.</p>
+<p>Trace variables’ states as they change during a for-loop.</p>
 <ol type="1">
-<li>Assign objects to variables</li>
-<li>Call functions with arguments</li>
-<li>Access elements of collections</li>
-<li>Recognize logical flow</li>
+<li>Sketch out a table</li>
+<li>Put variables in the columns and loop iterations in rows</li>
+<li>Write down the starting values of each variable in the first row</li>
+<li>Read through the loop, updating variable values as you go</li>
 </ol>
-<section id="assign-objects-to-variables" class="level3">
-<h3 class="anchored" data-anchor-id="assign-objects-to-variables">Assign objects to variables</h3>
-<p>Objects are nouns, which we store in variables. Create a variable using the <code>&lt;-</code> operator. <code>days_yr &lt;- 365</code> creates a variable called <code>days_yr</code> with the object 365.</p>
-<p>At their simplest, objects can be numbers, text, and logicals (true or false). Later you’ll learn how to make more complicated objects by combining these parts.</p>
-<section id="examples-of-simple-objects" class="level4">
-<h4 class="anchored" data-anchor-id="examples-of-simple-objects">Examples of simple objects</h4>
-<p>The following code shows how to assign simple objects. Lines starting with <code>#</code> are comments. They’re just for human eyes and the computer will ignore them.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Numbers, with and without decimals</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>golden_ration <span class="ot">&lt;-</span> <span class="fl">1.618</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>num_fingers <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Text uses quotes</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>fav_animal <span class="ot">&lt;-</span> <span class="st">"opossum"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>city <span class="ot">&lt;-</span> <span class="st">"Santa Barbara"</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Logicals must be in all caps</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>this_is_R <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>this_is_python <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>For example, the code trace for the following loop looks like the table below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">1</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(x))</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="fu">length</span>(x))) {</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  xi <span class="ot">&lt;-</span> x[i]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  yi <span class="ot">&lt;-</span> y[i]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  z[i] <span class="ot">&lt;-</span> xi<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> yi<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>x</code> = 1, 2, 3</p>
+<p><code>y</code> = 3, 2, 1</p>
+<p><code>seq(length(x))</code> = 1, 2, 3</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Iteration</th>
+<th>z</th>
+<th>i</th>
+<th>xi</th>
+<th>yi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0 0 0</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>10 0 0</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>10 8 0</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>10 8 10</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="examples-of-more-complex-objects" class="level4">
-<h4 class="anchored" data-anchor-id="examples-of-more-complex-objects">Examples of more complex objects</h4>
-<p>The R objects you’ve seen so far are actually collections, called <em>vectors</em>. Even when we say <code>days_yr &lt;- 365</code>, we’re creating a vector of one item. We create larger vectors using <code>c()</code> (think “c” for “combine”). This works when all the elements are the same type (number, text, or logical).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fibonacci <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">8</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Santa Barbara"</span>, <span class="st">"San Francisco"</span>, <span class="st">"Los Angeles"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ttff <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>When the vector includes elements of different types we use <code>list()</code> instead of <code>c()</code>. Often we name the elements of our list.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>max <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">age_yr =</span> <span class="dv">35</span>, <span class="at">job =</span> <span class="st">"postdoc"</span>, <span class="at">nationality =</span> <span class="st">"USA"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>rihanna <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">age_yr =</span> <span class="dv">35</span>, <span class="at">job =</span> <span class="st">"mogul"</span>, <span class="at">nationality =</span> <span class="st">"Barbados"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-</section>
-<section id="call-functions-with-arguments" class="level3">
-<h3 class="anchored" data-anchor-id="call-functions-with-arguments">Call functions with arguments</h3>
-<p>If objects are nouns, functions are verbs. They do something with objects. <code>sort()</code> sorts a vector. <code>mean()</code> finds the mean value of numbers in a vector. <code>seq()</code> creates a sequence. We <strong>call</strong> functions on <strong>arguments</strong> like so.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(<span class="fu">c</span>(<span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"e"</span>, <span class="st">"d"</span>, <span class="st">"c"</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">10</span>))</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Notice how the result of a function is a transformation of its argument. <code>sort()</code> took a vector with 5 elements and returned another vector of 5 elements. <code>mean()</code> also took a length 5 vector, but returned just one number. Conversely, <code>seq()</code> took one number and returned a length 5 vector. Functions are very flexible!</p>
-<p>A great thing about functions is they’re reusable. We can apply the same transformation to a lot of different objects.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(y)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>That’s the same function returning three different results, depending on the argument.</p>
-</section>
-<section id="access-elements-of-collections" class="level3">
-<h3 class="anchored" data-anchor-id="access-elements-of-collections">Access elements of collections</h3>
-<p>After we put data into an object we usually want to access it later. For simple vectors, we use <code>[]</code> to pull elements out.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span>]</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="assessment-1" class="level3">
+<h3 class="anchored" data-anchor-id="assessment-1">Assessment</h3>
+<p>Run the following code. Describe the bug.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data describing two cities</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>cities <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">"Santa Barbara"</span>, <span class="st">"Santa Cruz"</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pop_1000 =</span> <span class="fu">c</span>(<span class="dv">88</span>, <span class="dv">62</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Notice the list column!</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">major_roads =</span> <span class="fu">list</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">"Mission"</span>, <span class="st">"17"</span>, <span class="st">"9"</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(<span class="st">"Hollister"</span>, <span class="st">"217"</span>, <span class="st">"1"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Format the contents of each row and print to console</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="fu">length</span>(cities))) {</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract row</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  city <span class="ot">&lt;-</span> cities[i, ]</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Format row</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  city_pretty <span class="ot">&lt;-</span> <span class="fu">str_glue</span>(</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"{city$name} has a population of {city$pop_1000},000. Major roads "</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"include {paste(city$major_roads[[1]], collapse = ', ')}."</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># And print</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(city_pretty)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Code trace the for-loop. Can you identify the source of the bug?</p>
 </section>
 </section>
 

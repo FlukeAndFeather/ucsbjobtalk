@@ -1,0 +1,145 @@
+---
+title: "Prior Knowledge Distribution"
+format: html
+editor: visual
+---
+
+```{r}
+#| label: read-data
+#| include: false
+
+library(googlesheets4)
+library(tidyverse)
+
+gs4_deauth()
+
+prior_knowledge <- read_sheet("https://docs.google.com/spreadsheets/d/1cTGQmHEu6yxWKHobMX_mhx4xyL8TdpnE1hC7Kt_IJW8/edit?resourcekey#gid=1602360422",
+           col_names = c("timestamp",
+                         "name",
+                         "career_stage",
+                         "priorTabular data",
+                         "priorFunctions",
+                         "priorDataviz",
+                         "priorReproducibility",
+                         "priorGeospatial"),
+           skip = 1) %>% 
+  mutate(across(starts_with("prior"), parse_number),
+         id = row_number())
+
+# For testing
+prior_knowledge <- prior_knowledge %>% 
+  slice(rep(1, 26)) %>% 
+  mutate(career_stage = sample(unique(prior_knowledge$career_stage),
+                               size = 26,
+                               replace = TRUE),
+         name = LETTERS,
+         across(4:8, ~ sample(1:4, 26, replace = TRUE)),
+         id = row_number())
+
+```
+
+Visualize the distribution of *prior knowledge* of data science skills
+
+```{r}
+#| label: radar
+
+prior_knowledge_long <- prior_knowledge %>% 
+  pivot_longer(cols = starts_with("prior"),
+               names_to = "skill",
+               values_to = "rating") %>% 
+  mutate(skill = factor(substr(skill, 6, 100))) %>%
+  arrange(id, skill) %>% 
+  group_by(id) %>% 
+  # We'll do a wrap around
+  slice(c(1:n(), 1)) %>% 
+  ungroup()
+
+prior_knowledge_summary <- prior_knowledge_long %>% 
+  group_by(career_stage, skill) %>% 
+  summarize(rating = mean(rating),
+            .groups = "drop_last") %>% 
+  slice(c(1:n(), 1)) %>% 
+  ungroup()
+
+skills <- distinct(prior_knowledge_long, skill)
+
+ggplot(prior_knowledge_long, aes(skill, rating, color = career_stage)) +
+  geom_path(aes(group = id), 
+            alpha = 0.1,
+            position = position_jitter(0.05, 0.05)) +
+  geom_path(aes(color = career_stage, group = career_stage),
+            prior_knowledge_summary) +
+  annotate("point", 0, 0) +
+  geomtextpath::geom_textpath(aes(skill, label = skill),
+                              skills,
+                              y = 4.3,
+                              inherit.aes = FALSE,
+                              vjust = 1) +
+  scale_color_manual(values = c(Student = "#e7298a",
+                                `Post-doc` = "#7570b3",
+                                `Faculty (pre-tenure)` = "#d95f02",
+                                `Faculty (tenured)` = "#1b9e77")) +
+  scale_y_continuous(limits = c(0, 4.3)) +
+  ggiraphExtra:::coord_radar() +
+  theme_void() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
+
+```
+
+Two dissimilar cases
+
+```{r}
+#| label: dissimilar
+
+# Convert to a matrix
+prior_knowledge_wide <- prior_knowledge_long %>% 
+    group_by(id) %>% 
+    slice(1:(n() - 1)) %>% 
+    ungroup() %>% 
+    mutate(name_id = paste(name, id)) %>% 
+    pivot_wider(names_from = skill, 
+                values_from = rating, 
+                id_cols = name_id)
+prior_knowledge_mtx <- prior_knowledge_wide %>% 
+  select(-1) %>% 
+  as.matrix()
+rownames(prior_knowledge_mtx) <- prior_knowledge_wide[[1]]
+
+# Calculate Euclidean distance between individuals
+prior_knowledge_dist <- dist(prior_knowledge_mtx)
+
+# Get labels of two most distant individuals
+# Pulling out the labels of the maximum distance is weirdly hard!
+max_dist <- expand_grid(i = 1:26, j = 1:26) %>% 
+  filter(i < j) %>%
+  mutate(ij = 26 * (i - 1) - i * (i - 1) / 2 + j - i, 
+         dij = prior_knowledge_dist,
+         label_i = attr(prior_knowledge_dist, "Labels")[i],
+         label_j = attr(prior_knowledge_dist, "Labels")[j]) %>% 
+  filter(dij == max(dij)) %>% 
+  slice(1)
+
+# Plot those two individuals
+prior_knowledge_long %>% 
+  mutate(name_id = paste(name, id)) %>% 
+  filter(name_id %in% c(max_dist$label_i, max_dist$label_j)) %>% 
+  ggplot(aes(skill, rating, color = career_stage)) +
+  geom_path(aes(group = name_id)) +
+  geomtextpath::geom_textpath(aes(skill, label = skill),
+                              skills,
+                              y = 4.3,
+                              inherit.aes = FALSE,
+                              vjust = 1) +
+  annotate("point", 0, 0) +
+  scale_color_manual(values = c(Student = "#e7298a",
+                                `Post-doc` = "#7570b3",
+                                `Faculty (pre-tenure)` = "#d95f02",
+                                `Faculty (tenured)` = "#1b9e77")) +
+  scale_y_continuous(limits = c(0, 4.3)) +
+  ggiraphExtra:::coord_radar() +
+  theme_void() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
+
+```
