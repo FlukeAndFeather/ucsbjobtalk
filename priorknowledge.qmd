@@ -1,6 +1,8 @@
 ---
-title: "Prior Knowledge Distribution"
-format: html
+title: "Data Science Prior Knowledge"
+format:
+  revealjs: 
+    code-fold: true
 editor: visual
 ---
 
@@ -38,7 +40,7 @@ prior_knowledge <- prior_knowledge %>%
 
 ```
 
-Visualize the distribution of *prior knowledge* of data science skills
+The distribution of data science *prior knowledge*
 
 ```{r}
 #| label: radar
@@ -87,7 +89,9 @@ ggplot(prior_knowledge_long, aes(skill, rating, color = career_stage)) +
 
 ```
 
-Two dissimilar cases
+------------------------------------------------------------------------
+
+Two most dissimilar experiences
 
 ```{r}
 #| label: dissimilar
