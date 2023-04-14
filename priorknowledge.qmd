@@ -32,7 +32,7 @@ prior_knowledge <- read_sheet("https://docs.google.com/spreadsheets/d/1cTGQmHEu6
 
 ```
 
-The distribution of data science *prior knowledge*
+*Uneven* *prior knowledge* of environmental data science skills
 
 ```{r}
 #| label: prior_knowledge
@@ -48,22 +48,7 @@ prior_knowledge_summary <- prior_knowledge_long %>%
   summarize(rating = mean(rating),
             .groups = "drop")
 
-all_participants <- prior_knowledge_long %>% 
-  # Introduce a jitter for both points and lines
-  mutate(rating = rating + runif(n(), -0.1, 0.1)) %>% 
-  ggplot(aes(skill, rating, color = career_stage)) +
-  geom_line(aes(group = id), alpha = 0.5, linewidth = 1.2) +
-  geom_point(alpha = 0.8, size = 2) +
-  scale_color_manual(values = c(Student = "#e7298a",
-                                `Post-doc` = "#7570b3",
-                                `Faculty (pre-tenure)` = "#d95f02",
-                                `Faculty (tenured)` = "#1b9e77")) +
-  guides(color = guide_legend(override.aes = list(size = 4, 
-                                                  linewidth = 2))) +
-  expand_limits(y = c(0, 4)) +
-  labs(y = "Rating")
-
-participant_summary <- prior_knowledge_summary %>% 
+prior_knowledge_summary %>% 
   # Introduce a jitter for both points and lines
   mutate(rating = rating + runif(n(), -0.1, 0.1)) %>% 
   ggplot(aes(skill, rating, color = career_stage)) +
@@ -75,22 +60,48 @@ participant_summary <- prior_knowledge_summary %>%
                                 `Faculty (tenured)` = "#1b9e77")) +
   guides(color = guide_legend(override.aes = list(size = 4, 
                                                   linewidth = 2))) +
-  expand_limits(y = c(0, 4)) +
-  labs(y = "Rating")
-  
-(participant_summary | all_participants) + 
-  plot_layout(guides = "collect") &
+  expand_limits(y = c(1, 4)) +
+  coord_flip() +
+  labs(title = "Average ratings by career stage", 
+       y = "Rating") +
   theme_classic(base_size = 20) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        axis.title.x = element_blank(),
+  theme(axis.title.y = element_blank(),
         legend.key.width = unit(0.5, "in"),
-        legend.position = "bottom",
+        legend.position = "top",
         legend.title = element_blank())
 ```
 
----
+------------------------------------------------------------------------
 
-Two most dissimilar experiences
+*Uneven* *prior knowledge* of environmental data science skills
+
+```{r}
+prior_knowledge_long %>% 
+  # Introduce a jitter for both points and lines
+  mutate(rating = rating + runif(n(), -0.1, 0.1)) %>% 
+  ggplot(aes(skill, rating, color = career_stage)) +
+  geom_line(aes(group = id), alpha = 0.5, linewidth = 1.2) +
+  geom_point(alpha = 0.8, size = 2) +
+  scale_color_manual(values = c(Student = "#e7298a",
+                                `Post-doc` = "#7570b3",
+                                `Faculty (pre-tenure)` = "#d95f02",
+                                `Faculty (tenured)` = "#1b9e77")) +
+  guides(color = guide_legend(override.aes = list(size = 4, 
+                                                  linewidth = 2))) +
+  expand_limits(y = c(1, 4)) +
+  coord_flip() +
+  labs(title = "Individual participants' ratings",
+       y = "Rating") +
+  theme_classic(base_size = 20) +
+  theme(axis.title.y = element_blank(),
+        legend.key.width = unit(0.5, "in"),
+        legend.position = "top",
+        legend.title = element_blank())
+```
+
+------------------------------------------------------------------------
+
+How do we teach these two students at the same time?
 
 ```{r}
 #| label: dissimilar
@@ -142,12 +153,13 @@ prior_knowledge_long %>%
                                `Faculty (tenured)` = "#1b9e77")) +
   scale_linetype_manual(values = c("dotted", "dashed")) +
   guides(linetype = "none") +
-  expand_limits(y = c(0, 4)) +
-  labs(y = "Rating") +
+  expand_limits(y = c(1, 4)) +
+  coord_flip() +
+  labs(title = "Two most dissimilar students",
+       y = "Rating") +
   theme_classic(base_size = 18) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),
-        axis.title.x = element_blank(),
+  theme(axis.title.y = element_blank(),
         legend.key.width = unit(0.5, "in"),
-        legend.position = "bottom",
+        legend.position = "top",
         legend.title = element_blank())
 ```
