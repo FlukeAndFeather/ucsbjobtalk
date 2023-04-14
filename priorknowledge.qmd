@@ -3,6 +3,7 @@ title: "Data Science Prior Knowledge"
 format:
   revealjs: 
     code-fold: true
+    fig-height: 6
 editor: visual
 ---
 
@@ -11,6 +12,7 @@ editor: visual
 #| include: false
 
 library(googlesheets4)
+library(patchwork)
 library(tidyverse)
 
 gs4_deauth()
@@ -28,68 +30,65 @@ prior_knowledge <- read_sheet("https://docs.google.com/spreadsheets/d/1cTGQmHEu6
   mutate(across(starts_with("prior"), parse_number),
          id = row_number())
 
-# For testing
-prior_knowledge <- prior_knowledge %>% 
-  slice(rep(1, 26)) %>% 
-  mutate(career_stage = sample(unique(prior_knowledge$career_stage),
-                               size = 26,
-                               replace = TRUE),
-         name = LETTERS,
-         across(4:8, ~ sample(1:4, 26, replace = TRUE)),
-         id = row_number())
-
 ```
 
 The distribution of data science *prior knowledge*
 
 ```{r}
-#| label: radar
+#| label: prior_knowledge
 
 prior_knowledge_long <- prior_knowledge %>% 
   pivot_longer(cols = starts_with("prior"),
                names_to = "skill",
                values_to = "rating") %>% 
-  mutate(skill = factor(substr(skill, 6, 100))) %>%
-  arrange(id, skill) %>% 
-  group_by(id) %>% 
-  # We'll do a wrap around
-  slice(c(1:n(), 1)) %>% 
-  ungroup()
+  mutate(skill = factor(substr(skill, 6, 100)))
 
 prior_knowledge_summary <- prior_knowledge_long %>% 
   group_by(career_stage, skill) %>% 
   summarize(rating = mean(rating),
-            .groups = "drop_last") %>% 
-  slice(c(1:n(), 1)) %>% 
-  ungroup()
+            .groups = "drop")
 
-skills <- distinct(prior_knowledge_long, skill)
-
-ggplot(prior_knowledge_long, aes(skill, rating, color = career_stage)) +
-  geom_path(aes(group = id), 
-            alpha = 0.1,
-            position = position_jitter(0.05, 0.05)) +
-  geom_path(aes(color = career_stage, group = career_stage),
-            prior_knowledge_summary) +
-  annotate("point", 0, 0) +
-  geomtextpath::geom_textpath(aes(skill, label = skill),
-                              skills,
-                              y = 4.3,
-                              inherit.aes = FALSE,
-                              vjust = 1) +
+all_participants <- prior_knowledge_long %>% 
+  # Introduce a jitter for both points and lines
+  mutate(rating = rating + runif(n(), -0.1, 0.1)) %>% 
+  ggplot(aes(skill, rating, color = career_stage)) +
+  geom_line(aes(group = id), alpha = 0.5, linewidth = 1.2) +
+  geom_point(alpha = 0.8, size = 2) +
   scale_color_manual(values = c(Student = "#e7298a",
                                 `Post-doc` = "#7570b3",
                                 `Faculty (pre-tenure)` = "#d95f02",
                                 `Faculty (tenured)` = "#1b9e77")) +
-  scale_y_continuous(limits = c(0, 4.3)) +
-  ggiraphExtra:::coord_radar() +
-  theme_void() +
-  theme(legend.position = "bottom",
-        legend.title = element_blank())
+  guides(color = guide_legend(override.aes = list(size = 4, 
+                                                  linewidth = 2))) +
+  expand_limits(y = c(0, 4)) +
+  labs(y = "Rating")
 
+participant_summary <- prior_knowledge_summary %>% 
+  # Introduce a jitter for both points and lines
+  mutate(rating = rating + runif(n(), -0.1, 0.1)) %>% 
+  ggplot(aes(skill, rating, color = career_stage)) +
+  geom_line(aes(group = career_stage), alpha = 0.5, linewidth = 1.2) +
+  geom_point(alpha = 0.8, size = 2) +
+  scale_color_manual(values = c(Student = "#e7298a",
+                                `Post-doc` = "#7570b3",
+                                `Faculty (pre-tenure)` = "#d95f02",
+                                `Faculty (tenured)` = "#1b9e77")) +
+  guides(color = guide_legend(override.aes = list(size = 4, 
+                                                  linewidth = 2))) +
+  expand_limits(y = c(0, 4)) +
+  labs(y = "Rating")
+  
+(participant_summary | all_participants) + 
+  plot_layout(guides = "collect") &
+  theme_classic(base_size = 20) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title.x = element_blank(),
+        legend.key.width = unit(0.5, "in"),
+        legend.position = "bottom",
+        legend.title = element_blank())
 ```
 
-------------------------------------------------------------------------
+---
 
 Two most dissimilar experiences
 
@@ -98,13 +97,11 @@ Two most dissimilar experiences
 
 # Convert to a matrix
 prior_knowledge_wide <- prior_knowledge_long %>% 
-    group_by(id) %>% 
-    slice(1:(n() - 1)) %>% 
-    ungroup() %>% 
-    mutate(name_id = paste(name, id)) %>% 
-    pivot_wider(names_from = skill, 
-                values_from = rating, 
-                id_cols = name_id)
+  filter(career_stage == "Student") %>% 
+  mutate(name_id = paste(name, id)) %>% 
+  pivot_wider(names_from = skill, 
+              values_from = rating, 
+              id_cols = name_id)
 prior_knowledge_mtx <- prior_knowledge_wide %>% 
   select(-1) %>% 
   as.matrix()
@@ -115,9 +112,10 @@ prior_knowledge_dist <- dist(prior_knowledge_mtx)
 
 # Get labels of two most distant individuals
 # Pulling out the labels of the maximum distance is weirdly hard!
-max_dist <- expand_grid(i = 1:26, j = 1:26) %>% 
+n_people <- attr(prior_knowledge_dist, "Size")
+max_dist <- expand_grid(i = seq(n_people), j = seq(n_people)) %>% 
   filter(i < j) %>%
-  mutate(ij = 26 * (i - 1) - i * (i - 1) / 2 + j - i, 
+  mutate(ij = n_people * (i - 1) - i * (i - 1) / 2 + j - i, 
          dij = prior_knowledge_dist,
          label_i = attr(prior_knowledge_dist, "Labels")[i],
          label_j = attr(prior_knowledge_dist, "Labels")[j]) %>% 
@@ -126,24 +124,30 @@ max_dist <- expand_grid(i = 1:26, j = 1:26) %>%
 
 # Plot those two individuals
 prior_knowledge_long %>% 
-  mutate(name_id = paste(name, id)) %>% 
+  mutate(name_id = paste(name, id),
+         rating = rating + runif(n(), -0.1, 0.1)) %>% 
   filter(name_id %in% c(max_dist$label_i, max_dist$label_j)) %>% 
-  ggplot(aes(skill, rating, color = career_stage)) +
-  geom_path(aes(group = name_id)) +
-  geomtextpath::geom_textpath(aes(skill, label = skill),
-                              skills,
-                              y = 4.3,
-                              inherit.aes = FALSE,
-                              vjust = 1) +
-  annotate("point", 0, 0) +
+  ggplot(aes(skill, rating)) +
+  geom_line(aes(group = name_id, linetype = name_id, color = career_stage), 
+            alpha = 0.5, 
+            linewidth = 1.25) +
+  geom_point(aes(fill = career_stage), alpha = 0.8, size = 4, shape = 21) +
   scale_color_manual(values = c(Student = "#e7298a",
                                 `Post-doc` = "#7570b3",
                                 `Faculty (pre-tenure)` = "#d95f02",
                                 `Faculty (tenured)` = "#1b9e77")) +
-  scale_y_continuous(limits = c(0, 4.3)) +
-  ggiraphExtra:::coord_radar() +
-  theme_void() +
-  theme(legend.position = "bottom",
+  scale_fill_manual(values = c(Student = "#e7298a",
+                               `Post-doc` = "#7570b3",
+                               `Faculty (pre-tenure)` = "#d95f02",
+                               `Faculty (tenured)` = "#1b9e77")) +
+  scale_linetype_manual(values = c("dotted", "dashed")) +
+  guides(linetype = "none") +
+  expand_limits(y = c(0, 4)) +
+  labs(y = "Rating") +
+  theme_classic(base_size = 18) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.title.x = element_blank(),
+        legend.key.width = unit(0.5, "in"),
+        legend.position = "bottom",
         legend.title = element_blank())
-
 ```
