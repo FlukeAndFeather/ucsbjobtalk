@@ -28,6 +28,11 @@ prior_knowledge <- read_sheet("https://docs.google.com/spreadsheets/d/1cTGQmHEu6
                          "priorGeospatial"),
            skip = 1) %>% 
   mutate(across(starts_with("prior"), parse_number),
+         career_stage = factor(career_stage, 
+                               levels = c("Student",
+                                          "Post-doc",
+                                          "Faculty (pre-tenure)",
+                                          "Faculty (tenured)")),
          id = row_number())
 
 ```
